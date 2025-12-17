@@ -13,5 +13,23 @@ pucblic class Studctl{
 
     //post
     @PostMapping("/add")
+    public Studentity addStudent(@RequestBody Studentity st){
+        return ser.saveData(st);
+    }
+
+    //get all
+    @GetMapping("/getall")
+    public Collection<Studentity> getAllStudents(){
+        return ser.getAll();
+    }
+
+    //get by id
+    @GetMapping("/get/{id}")
+    public Studentity getStudentById(@PathVariable int id ){
+        return ser.getById(id);
+    }
+
+    //put
+    @PutMapping()
 
 }
