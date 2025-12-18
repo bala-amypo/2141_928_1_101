@@ -1,35 +1,26 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-@Table(
-        name = "prediction_rules",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "ruleName")
-        }
-)
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class PredictionRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String ruleName;
+    private Integer daysWindow;
 
-    @Column(nullable = false)
-    private Integer averageDaysWindow;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    @Column(nullable = false)
-    private Integer minThreshold;
+    public String getRuleName() { return ruleName; }
+    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
 
-    @Column(nullable = false)
-    private Integer maxThreshold;
+    public Integer getDaysWindow() { return daysWindow; }
+    public void setDaysWindow(Integer daysWindow) { this.daysWindow = daysWindow; }
 }
