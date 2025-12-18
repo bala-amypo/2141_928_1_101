@@ -1,19 +1,47 @@
 package com.example.demo.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name="products")
+@Table(
+        name = "stock_records",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"product_id", "warehouse_id"})
+        }
+)
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Product{
+public class StockRecord {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable=false)
-    private String name;
-    private String category;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "warehouse_id")
+    private Warehouse warehouse;
+
+    @Column(nullable = false)
+    private Integer currentQuantity;
+
+    @Column(nullable = false)
+    private Integer reorderThreshold;
+
+    private LocalDateTime lastUpdated;
+
+    @PrePersist
+    @PreUpdate
+    public void onUpdate() {
+        this.lastUpdated = LocalDateTime.now();
+    }
 }

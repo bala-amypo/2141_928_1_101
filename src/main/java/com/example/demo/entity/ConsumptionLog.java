@@ -1,0 +1,30 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "consumption_logs")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ConsumptionLog {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "stock_record_id")
+    private StockRecord stockRecord;
+
+    @Column(nullable = false)
+    private Integer consumedQuantity;
+
+    @Column(nullable = false)
+    private LocalDate consumedDate;
+}
