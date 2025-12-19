@@ -5,7 +5,6 @@ import com.example.demo.entity.User;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import com.example.demo.service.validation.UserValidation;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,17 +22,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(UserRegisterDto dto) {
-
-        // ✅ VALIDATION CALLED HERE
-        UserValidation.validateRegister(dto);
-
         User user = User.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())
                 .password(encoder.encode(dto.getPassword()))
                 .build();
 
-        userRepository.save(user);
+        userRepository.save(user); // ✅ DB SAVE
     }
 
     @Override
