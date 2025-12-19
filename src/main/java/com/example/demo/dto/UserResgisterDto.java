@@ -1,0 +1,19 @@
+package com.example.demo.dto;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+
+@Data
+public class UserRegisterDto {
+
+    @NotBlank(message = "name must not be empty")
+    private String name;
+
+    @Email(message = "email must be valid")
+    @NotBlank(message = "email must not be empty")
+    private String email;
+
+    @NotBlank(message = "password must not be empty")
+    private String password;
+}
