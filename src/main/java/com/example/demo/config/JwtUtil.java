@@ -1,4 +1,4 @@
-=package com.example.demo.config;
+package com.example.demo.config;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,7 +9,7 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String SECRET = "mysecretkey123456";
+    private static final String SECRET = "mysecretkey123456";
 
     public String generateToken(String email) {
         return Jwts.builder()
