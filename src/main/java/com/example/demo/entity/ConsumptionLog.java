@@ -9,17 +9,17 @@ public class ConsumptionLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long stockId;
-    private Integer consumedQuantity;
+    private Long stockRecordId;
+    private Integer quantity;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public Long getStockId() { return stockId; }
-    public void setStockId(Long stockId) { this.stockId = stockId; }
-
-    public Integer getConsumedQuantity() { return consumedQuantity; }
-    public void setConsumedQuantity(Integer consumedQuantity) {
-        this.consumedQuantity = consumedQuantity;
+    public Long getStockRecordId() { return stockRecordId; }
+    public void setStockRecordId(Long stockRecordId) {
+        this.stockRecordId = stockRecordId;
     }
+
+    public Integer getQuantity() { return quantity; }
+    public void setQuantity(Integer quantity) { this.quantity = quantity; }
 }
