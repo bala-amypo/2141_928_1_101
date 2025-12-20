@@ -5,24 +5,12 @@ import com.example.demo.service.WarehouseService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("/warehouses")
 public class WarehouseController {
 
-    private final WarehouseService service;
-
-    public WarehouseController(WarehouseService service) {
-        this.service = service;
-    }
-
     @PostMapping
     public Warehouse create(@RequestBody Warehouse warehouse) {
-        return service.save(warehouse);
-    }
-
-    @GetMapping
-    public List<Warehouse> getAll() {
-        return service.getAll();
+        return warehouseService.save(warehouse);
     }
 }
