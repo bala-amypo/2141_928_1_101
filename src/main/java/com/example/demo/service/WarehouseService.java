@@ -9,4 +9,6 @@ public interface WarehouseService {
     Warehouse save(Warehouse warehouse);
 
     List<Warehouse> getAll();
+
+    Warehouse getById(Long id);
 }

@@ -6,23 +6,28 @@ import com.example.demo.service.ProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository repository;
+    private final ProductRepository repo;
 
-    public ProductServiceImpl(ProductRepository repository) {
-        this.repository = repository;
+    public ProductServiceImpl(ProductRepository repo) {
+        this.repo = repo;
     }
 
     @Override
     public Product save(Product product) {
-        return repository.save(product);
+        return repo.save(product);
     }
 
     @Override
     public List<Product> getAll() {
-        return repository.findAll();
+        return repo.findAll();
+    }
+
+    @Override
+    public Product getById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 }

@@ -11,16 +11,47 @@ import java.util.List;
 public class StockRecordServiceImpl implements StockRecordService {
 
     private final StockRecordRepository repo;
+    private final ProductRepository productRepo;
+    private final WarehouseRepository warehouseRepo;
 
-    public StockRecordServiceImpl(StockRecordRepository repo) {
+    public StockRecordServiceImpl(
+            StockRecordRepository repo,
+            ProductRepository productRepo,
+            WarehouseRepository warehouseRepo) {
         this.repo = repo;
+        this.productRepo = productRepo;
+        this.warehouseRepo = warehouseRepo;
     }
 
-    public StockRecord save(StockRecord stock) {
-        return repo.save(stock);
+    @Override
+    public StockRecord createStockRecord(Long productId, Long warehouseId, StockRecord stockRecord) {
+
+        Product product = productRepo.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Warehouse warehouse = warehouseRepo.findById(warehouseId)
+                .orElseThrow(() -> new RuntimeException("Warehouse not found"));
+
+        stockRecord.setProduct(product);
+        stockRecord.setWarehouse(warehouse);
+
+        return repo.save(stockRecord);
     }
 
-    public List<StockRecord> getAll() {
-        return repo.findAll();
+    @Override
+    public StockRecord getById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("StockRecord not found"));
+    }
+
+    @Override
+    public List<StockRecord> getRecordsByProduct(Long productId) {
+        return repo.findByProductId(productId);
+    }
+
+    @Override
+    public List<StockRecord> getRecordsByWarehouse(Long warehouseId) {
+        return repo.findByWarehouseId(warehouseId);
     }
 }
+

@@ -6,23 +6,29 @@ import com.example.demo.service.WarehouseService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
 public class WarehouseServiceImpl implements WarehouseService {
 
-    private final WarehouseRepository repository;
+    private final WarehouseRepository repo;
 
-    public WarehouseServiceImpl(WarehouseRepository repository) {
-        this.repository = repository;
+    public WarehouseServiceImpl(WarehouseRepository repo) {
+        this.repo = repo;
     }
 
     @Override
     public Warehouse save(Warehouse warehouse) {
-        return repository.save(warehouse);
+        return repo.save(warehouse);
     }
 
     @Override
     public List<Warehouse> getAll() {
-        return repository.findAll();
+        return repo.findAll();
+    }
+
+    @Override
+    public Warehouse getById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Warehouse not found"));
     }
 }
+

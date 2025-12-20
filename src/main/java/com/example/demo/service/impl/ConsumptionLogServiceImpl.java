@@ -16,11 +16,24 @@ public class ConsumptionLogServiceImpl implements ConsumptionLogService {
         this.repo = repo;
     }
 
+    @Override
     public ConsumptionLog save(ConsumptionLog log) {
         return repo.save(log);
     }
 
+    @Override
     public List<ConsumptionLog> getAll() {
         return repo.findAll();
+    }
+
+    @Override
+    public ConsumptionLog getById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("ConsumptionLog not found"));
+    }
+
+    @Override
+    public List<ConsumptionLog> getByStockRecord(Long stockRecordId) {
+        return repo.findByStockRecordId(stockRecordId);
     }
 }
