@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/predictions")
+@RequestMapping("/api/predict")
 public class PredictionRuleController {
 
     private final PredictionRuleService service;
@@ -16,12 +16,14 @@ public class PredictionRuleController {
         this.service = service;
     }
 
-    @PostMapping
+    // POST /api/predict/rules
+    @PostMapping("/rules")
     public PredictionRule create(@RequestBody PredictionRule rule) {
         return service.save(rule);
     }
 
-    @GetMapping
+    // GET /api/predict/rules
+    @GetMapping("/rules")
     public List<PredictionRule> getAll() {
         return service.getAll();
     }
