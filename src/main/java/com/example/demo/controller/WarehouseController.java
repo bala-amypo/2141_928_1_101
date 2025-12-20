@@ -7,22 +7,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/warehouses")
+@RequestMapping("/api/warehouses")
 public class WarehouseController {
 
-    private final WarehouseService warehouseService;
+    private final WarehouseService service;
 
-    public WarehouseController(WarehouseService warehouseService) {
-        this.warehouseService = warehouseService;
+    public WarehouseController(WarehouseService service) {
+        this.service = service;
     }
 
+    // POST /api/warehouses
     @PostMapping
     public Warehouse create(@RequestBody Warehouse warehouse) {
-        return warehouseService.save(warehouse);
+        return service.save(warehouse);
     }
 
+    // GET /api/warehouses
     @GetMapping
     public List<Warehouse> getAll() {
-        return warehouseService.getAll();
+        return service.getAll();
+    }
+
+    // ✅ GET /api/warehouses/{id}
+    @GetMapping("/{id}")
+    public Warehouse getById(@PathVariable Long id) {
+        return service.getById(id);
     }
 }
