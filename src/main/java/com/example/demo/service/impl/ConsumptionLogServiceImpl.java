@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ConsumptionLogServiceImpl implements ConsumptionLogService {
+public class ConsumptionLogServiceImpl
+        implements ConsumptionLogService {
 
     private final ConsumptionLogRepository repo;
 
@@ -29,7 +30,8 @@ public class ConsumptionLogServiceImpl implements ConsumptionLogService {
     @Override
     public ConsumptionLog getById(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("ConsumptionLog not found"));
+                .orElseThrow(() ->
+                        new RuntimeException("ConsumptionLog not found"));
     }
 
     @Override
