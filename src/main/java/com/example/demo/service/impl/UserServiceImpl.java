@@ -1,11 +1,10 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dto.UserRegisterDto;
 import com.example.demo.entity.User;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,28 +13,31 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
-    public void register(UserRegisterDto dto) {
-        User user = User.builder()
-                .name(dto.getName())
-                .email(dto.getEmail())
-                .password(encoder.encode(dto.getPassword()))
-                .build();
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
 
-        userRepository.save(user); // ✅ DB SAVE
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User not found"));
+
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getEmail())
+                .password(user.getPassword())
+                .authorities("USER")
+                .build();
     }
 
     @Override
     public User getByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
+                        new UsernameNotFoundException("User not found"));
     }
 
     @Override
