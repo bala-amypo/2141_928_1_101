@@ -20,7 +20,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+            // 🔑 CORS ENABLE (VERY IMPORTANT)
+            .cors(cors -> {})
+
+            // 🔒 CSRF DISABLE (REST API)
             .csrf(csrf -> csrf.disable())
+
+            // 🔐 AUTHORIZATION RULES
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                         "/auth/**",
@@ -30,10 +36,13 @@ public class SecurityConfig {
                 ).permitAll()
                 .anyRequest().authenticated()
             )
+
+            // 🧠 STATELESS SESSION (JWT)
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             );
 
+        // 🔥 JWT FILTER
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
