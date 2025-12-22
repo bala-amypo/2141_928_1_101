@@ -5,11 +5,18 @@ import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.UserRegisterDto;
 import com.example.demo.entity.User;
 
+import java.util.List;
+
 public interface UserService {
 
-    void register(UserRegisterDto dto);
-
+    // auth
+    User register(UserRegisterDto dto);
     AuthResponse login(AuthRequest request);
 
+    // user crud (needed by UserController)
+    User save(User user);
+    List<User> getAll();
+
+    // used by JWT
     User getByEmail(String email);
 }
