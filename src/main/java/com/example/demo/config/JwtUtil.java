@@ -1,12 +1,9 @@
 package com.example.demo.config;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
 import java.util.Date;
 
 @Component
@@ -18,42 +15,27 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes());
-    }
-
-    public String generateToken(String username) {
+    public String generateToken(String email) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
-    public String extractUsername(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
+    public String extractEmail(String token) {
+        return Jwts.parser().setSigningKey(secret)
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody().getSubject();
     }
 
-    // ✅ THIS METHOD FIXES YOUR ERROR
-    public boolean validateToken(String token, UserDetails userDetails) {
-        String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
-    }
-
-    private boolean isTokenExpired(String token) {
-        Date expirationDate = Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getExpiration();
-
-        return expirationDate.before(new Date());
+    public boolean validateToken(String token) {
+        try {
+            extractEmail(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
