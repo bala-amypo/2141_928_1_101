@@ -1,35 +1,30 @@
 package com.example.demo.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 @Configuration
-public class CorsConfig implements WebMvcConfigurer {
+public class CorsConfig {
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
+    @Bean
+    public CorsFilter corsFilter() {
 
-        registry.addMapping("/**")
-                // allow Swagger / browser
-                .allowedOriginPatterns("*")
+        CorsConfiguration config = new CorsConfiguration();
 
-                // HTTP methods
-                .allowedMethods(
-                        "GET",
-                        "POST",
-                        "PUT",
-                        "DELETE",
-                        "OPTIONS"
-                )
+        config.setAllowCredentials(true);
+        config.setAllowedOriginPatterns(List.of("*")); // allow all origins
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
-                // headers
-                .allowedHeaders("*")
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
 
-                // JWT header support
-                .exposedHeaders("Authorization")
-
-                // browser safety
-                .allowCredentials(false);
+        return new CorsFilter(source);
     }
 }
