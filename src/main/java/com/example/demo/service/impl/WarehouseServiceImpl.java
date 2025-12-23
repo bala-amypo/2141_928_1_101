@@ -12,34 +12,29 @@ import java.util.List;
 @Service
 public class WarehouseServiceImpl implements WarehouseService {
 
-    private final WarehouseRepository repo;
+    private final WarehouseRepository repository;
 
-    public WarehouseServiceImpl(WarehouseRepository repo) {
-        this.repo = repo;
+    public WarehouseServiceImpl(WarehouseRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public Warehouse createWarehouse(Warehouse w) {
-        if (w.getLocation() == null || w.getLocation().isBlank()) {
+    public Warehouse createWarehouse(Warehouse warehouse) {
+        if (warehouse.getLocation() == null || warehouse.getLocation().isBlank()) {
             throw new IllegalArgumentException("location must not be empty");
         }
-
-        repo.findByWarehouseName(w.getWarehouseName()).ifPresent(x -> {
-            throw new IllegalArgumentException("warehouseName must be unique");
-        });
-
-        w.setCreatedAt(LocalDateTime.now());
-        return repo.save(w);
+        warehouse.setCreatedAt(LocalDateTime.now());
+        return repository.save(warehouse);
     }
 
     @Override
     public Warehouse getWarehouse(Long id) {
-        return repo.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Warehouse not found"));
     }
 
     @Override
     public List<Warehouse> getAllWarehouses() {
-        return repo.findAll();
+        return repository.findAll();
     }
 }

@@ -12,15 +12,14 @@ import java.util.List;
 @Service
 public class StockRecordServiceImpl implements StockRecordService {
 
-    private final StockRecordRepository repo;
+    private final StockRecordRepository stockRepo;
     private final ProductRepository productRepo;
     private final WarehouseRepository warehouseRepo;
 
-    public StockRecordServiceImpl(
-            StockRecordRepository repo,
-            ProductRepository productRepo,
-            WarehouseRepository warehouseRepo) {
-        this.repo = repo;
+    public StockRecordServiceImpl(StockRecordRepository stockRepo,
+                                  ProductRepository productRepo,
+                                  WarehouseRepository warehouseRepo) {
+        this.stockRepo = stockRepo;
         this.productRepo = productRepo;
         this.warehouseRepo = warehouseRepo;
     }
@@ -34,33 +33,33 @@ public class StockRecordServiceImpl implements StockRecordService {
         Warehouse warehouse = warehouseRepo.findById(warehouseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Warehouse not found"));
 
-        if (repo.existsByProductIdAndWarehouseId(productId, warehouseId)) {
+        boolean exists = stockRepo.findByProductId(productId).stream()
+                .anyMatch(r -> r.getWarehouse().getId().equals(warehouseId));
+
+        if (exists) {
             throw new IllegalArgumentException("StockRecord already exists");
-        }
-
-        if (record.getCurrentQuantity() < 0) {
-            throw new IllegalArgumentException("currentQuantity must be >= 0");
-        }
-
-        if (record.getReorderThreshold() <= 0) {
-            throw new IllegalArgumentException("reorderThreshold must be > 0");
         }
 
         record.setProduct(product);
         record.setWarehouse(warehouse);
         record.setLastUpdated(LocalDateTime.now());
 
-        return repo.save(record);
+        return stockRepo.save(record);
     }
 
     @Override
     public StockRecord getStockRecord(Long id) {
-        return repo.findById(id)
+        return stockRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("StockRecord not found"));
     }
 
     @Override
     public List<StockRecord> getRecordsBy_product(Long productId) {
-        return repo.findByProductId(productId);
+        return stockRepo.findByProductId(productId);
+    }
+
+    @Override
+    public List<StockRecord> getRecordsByWarehouse(Long warehouseId) {
+        return stockRepo.findByWarehouseId(warehouseId);
     }
 }

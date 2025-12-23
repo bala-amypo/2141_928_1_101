@@ -1,13 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Warehouse;
+import com.example.demo.model.Warehouse;
 import com.example.demo.service.WarehouseService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/warehouses")
+@Tag(name = "Warehouses")
 public class WarehouseController {
 
     private final WarehouseService service;
@@ -16,21 +18,18 @@ public class WarehouseController {
         this.service = service;
     }
 
-    // POST /api/warehouses
     @PostMapping
     public Warehouse create(@RequestBody Warehouse warehouse) {
-        return service.save(warehouse);
+        return service.createWarehouse(warehouse);
     }
 
-    // GET /api/warehouses
     @GetMapping
     public List<Warehouse> getAll() {
-        return service.getAll();
+        return service.getAllWarehouses();
     }
 
-    // ✅ GET /api/warehouses/{id}
     @GetMapping("/{id}")
-    public Warehouse getById(@PathVariable Long id) {
-        return service.getById(id);
+    public Warehouse get(@PathVariable Long id) {
+        return service.getWarehouse(id);
     }
 }

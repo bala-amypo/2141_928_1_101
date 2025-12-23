@@ -2,12 +2,16 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "consumption_logs")
-@Getter @Setter @Builder
-@NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ConsumptionLog {
 
     @Id
@@ -18,5 +22,6 @@ public class ConsumptionLog {
     private StockRecord stockRecord;
 
     private Integer consumedQuantity;
+
     private LocalDate consumedDate;
 }

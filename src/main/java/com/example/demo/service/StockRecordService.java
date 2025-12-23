@@ -1,16 +1,15 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.StockRecord;
-
+import com.example.demo.model.StockRecord;
 import java.util.List;
 
 public interface StockRecordService {
 
-    StockRecord save(StockRecord stockRecord);
+    StockRecord createStockRecord(Long productId, Long warehouseId, StockRecord record);
 
-    List<StockRecord> getAll();
+    StockRecord getStockRecord(Long id);
 
-    StockRecord getById(Long id);
+    List<StockRecord> getRecordsBy_product(Long productId);
 
-    List<StockRecord> getRecordsByProduct(Long productId);
+    List<StockRecord> getRecordsByWarehouse(Long warehouseId);
 }

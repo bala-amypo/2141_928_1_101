@@ -2,15 +2,19 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(
     name = "stock_records",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"product_id","warehouse_id"})
+    uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "warehouse_id"})
 )
-@Getter @Setter @Builder
-@NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class StockRecord {
 
     @Id
@@ -24,6 +28,8 @@ public class StockRecord {
     private Warehouse warehouse;
 
     private Integer currentQuantity;
+
     private Integer reorderThreshold;
+
     private LocalDateTime lastUpdated;
 }
