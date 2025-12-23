@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Product;
+import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,21 +16,18 @@ public class ProductController {
         this.service = service;
     }
 
-    // POST /api/products
     @PostMapping
     public Product create(@RequestBody Product product) {
-        return service.save(product);
+        return service.createProduct(product);
     }
 
-    // GET /api/products
     @GetMapping
     public List<Product> getAll() {
-        return service.getAll();
+        return service.getAllProducts();
     }
 
-    // ✅ GET /api/products/{id}
     @GetMapping("/{id}")
-    public Product getById(@PathVariable Long id) {
-        return service.getById(id);
+    public Product get(@PathVariable Long id) {
+        return service.getProduct(id);
     }
 }
