@@ -1,13 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.StockRecord;
+import com.example.demo.model.StockRecord;
 import com.example.demo.service.StockRecordService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/stocks")
+@Tag(name = "Stock Records")
 public class StockRecordController {
 
     private final StockRecordService service;
@@ -16,27 +18,26 @@ public class StockRecordController {
         this.service = service;
     }
 
-    // POST /api/stocks
-    @PostMapping
-    public StockRecord create(@RequestBody StockRecord stockRecord) {
-        return service.save(stockRecord);
+    @PostMapping("/{productId}/{warehouseId}")
+    public StockRecord create(
+            @PathVariable Long productId,
+            @PathVariable Long warehouseId,
+            @RequestBody StockRecord record) {
+        return service.createStockRecord(productId, warehouseId, record);
     }
 
-    // GET /api/stocks
-    @GetMapping
-    public List<StockRecord> getAll() {
-        return service.getAll();
-    }
-
-    // GET /api/stocks/{id}
     @GetMapping("/{id}")
-    public StockRecord getById(@PathVariable Long id) {
-        return service.getById(id);
+    public StockRecord get(@PathVariable Long id) {
+        return service.getStockRecord(id);
     }
 
-    // GET /api/stocks/product/{productId}
     @GetMapping("/product/{productId}")
-    public List<StockRecord> getByProduct(@PathVariable Long productId) {
-        return service.getRecordsByProduct(productId);
+    public List<StockRecord> byProduct(@PathVariable Long productId) {
+        return service.getRecordsBy_product(productId);
+    }
+
+    @GetMapping("/warehouse/{warehouseId}")
+    public List<StockRecord> byWarehouse(@PathVariable Long warehouseId) {
+        return service.getRecordsByWarehouse(warehouseId);
     }
 }

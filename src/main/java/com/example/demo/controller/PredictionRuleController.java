@@ -1,13 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.PredictionRule;
+import com.example.demo.model.PredictionRule;
 import com.example.demo.service.PredictionRuleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/predict")
+@Tag(name = "Prediction")
 public class PredictionRuleController {
 
     private final PredictionRuleService service;
@@ -16,15 +18,13 @@ public class PredictionRuleController {
         this.service = service;
     }
 
-    // POST /api/predict/rules
     @PostMapping("/rules")
-    public PredictionRule create(@RequestBody PredictionRule rule) {
-        return service.save(rule);
+    public PredictionRule createRule(@RequestBody PredictionRule rule) {
+        return service.createRule(rule);
     }
 
-    // GET /api/predict/rules
     @GetMapping("/rules")
-    public List<PredictionRule> getAll() {
-        return service.getAll();
+    public List<PredictionRule> getRules() {
+        return service.getAllRules();
     }
 }
