@@ -6,11 +6,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "consumption_logs")
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter @Builder
+@NoArgsConstructor @AllArgsConstructor
 public class ConsumptionLog {
 
     @Id
@@ -18,10 +15,8 @@ public class ConsumptionLog {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "stock_record_id")
     private StockRecord stockRecord;
 
     private Integer consumedQuantity;
-
     private LocalDate consumedDate;
 }
