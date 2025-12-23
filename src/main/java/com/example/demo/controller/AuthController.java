@@ -1,25 +1,27 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.*;
 import com.example.demo.model.User;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserRepository repo;
+    private final UserService service;
 
-    public AuthController(UserRepository repo) {
-        this.repo = repo;
+    public AuthController(UserService service) {
+        this.service = service;
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        user.setCreatedAt(LocalDateTime.now());
-        return repo.save(user);
+    public User register(@RequestBody UserRegisterDto dto) {
+        return service.register(dto);
+    }
+
+    @PostMapping("/login")
+    public AuthResponse login(@RequestBody AuthRequest request) {
+        return service.login(request);
     }
 }
