@@ -5,7 +5,6 @@ import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.service.ProductService;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,17 +18,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(Product product) {
-        if (product.getProductName() == null || product.getProductName().isBlank()) {
+    public Product createProduct(Product p) {
+        if (p.getProductName() == null || p.getProductName().isBlank()) {
             throw new IllegalArgumentException("productName must not be blank");
         }
-
-        repo.findBySku(product.getSku()).ifPresent(p -> {
+        repo.findBySku(p.getSku()).ifPresent(x -> {
             throw new IllegalArgumentException("SKU already exists");
         });
-
-        product.setCreatedAt(LocalDateTime.now());
-        return repo.save(product);
+        p.setCreatedAt(LocalDateTime.now());
+        return repo.save(p);
     }
 
     @Override

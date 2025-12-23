@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -22,7 +21,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAll() {
+    public List<Product> all() {
         return service.getAllProducts();
     }
 
