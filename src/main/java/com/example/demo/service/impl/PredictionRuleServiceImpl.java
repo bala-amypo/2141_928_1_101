@@ -1,10 +1,11 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.PredictionRule;
+import com.example.demo.model.PredictionRule;
 import com.example.demo.repository.PredictionRuleRepository;
 import com.example.demo.service.PredictionRuleService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,12 +18,13 @@ public class PredictionRuleServiceImpl implements PredictionRuleService {
     }
 
     @Override
-    public PredictionRule save(PredictionRule rule) {
+    public PredictionRule createRule(PredictionRule rule) {
+        rule.setCreatedAt(LocalDateTime.now());
         return repository.save(rule);
     }
 
     @Override
-    public List<PredictionRule> getAll() {
+    public List<PredictionRule> getAllRules() {
         return repository.findAll();
     }
 }

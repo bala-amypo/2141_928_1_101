@@ -2,12 +2,16 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "prediction_rules")
-@Getter @Setter @Builder
-@NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PredictionRule {
 
     @Id
@@ -18,7 +22,10 @@ public class PredictionRule {
     private String ruleName;
 
     private Integer averageDaysWindow;
+
     private Integer minDailyUsage;
+
     private Integer maxDailyUsage;
+
     private LocalDateTime createdAt;
 }
