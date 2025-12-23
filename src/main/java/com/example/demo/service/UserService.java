@@ -1,9 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
+
+    User register(User user);
 
     User save(User user);
 

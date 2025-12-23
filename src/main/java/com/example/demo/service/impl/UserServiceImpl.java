@@ -48,7 +48,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .authorities(user.getRoles())
+                .authorities(
+    user.getRoles().stream()
+        .map(role -> "ROLE_" + role)
+        .toArray(String[]::new)
+)
+
                 .build();
     }
 }
