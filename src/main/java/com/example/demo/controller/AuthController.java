@@ -1,12 +1,12 @@
-package com.example.resourcemanagement.controller;
+package com.example.demo.controller;
 
-import com.example.resourcemanagement.entity.User;
-import com.example.resourcemanagement.repository.UserRepository;
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*") // important for Swagger & tests
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final UserRepository userRepository;
