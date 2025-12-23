@@ -1,22 +1,29 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.dto.UserRegisterDto;
+import com.example.demo.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*")
 public class AuthController {
 
-    private final UserRepository userRepository;
+    private final UserService service;
 
-    public AuthController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AuthController(UserService service) {
+        this.service = service;
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userRepository.save(user);
+    public String register(@RequestBody UserRegisterDto dto) {
+        service.register(dto);
+        return "User registered successfully";
+    }
+
+    @PostMapping("/login")
+    public AuthResponse login(@RequestBody AuthRequest request) {
+        return service.login(request);
     }
 }
