@@ -1,14 +1,17 @@
-// package com.example.demo.dto;
+package com.example.demo.dto;
 
-// public class AuthResponse {
+import lombok.*;
 
-//     private String token;
+import java.util.Set;
 
-//     public AuthResponse(String token) {
-//         this.token = token;
-//     }
-
-//     public String getToken() {
-//         return token;
-//     }
-// }
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class AuthResponse {
+    private String token;
+    private Long userId;
+    private String email;
+    private Set<String> roles;
+}

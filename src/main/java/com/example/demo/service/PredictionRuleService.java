@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.PredictionRule;
+import com.example.demo.model.PredictionRule;
 
 import java.util.List;
 
 public interface PredictionRuleService {
 
-    PredictionRule save(PredictionRule rule);
+    PredictionRule createRule(PredictionRule rule);
 
-    List<PredictionRule> getAll();
+    List<PredictionRule> getAllRules();
 }

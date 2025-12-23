@@ -1,13 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.ConsumptionLog;
+import com.example.demo.model.ConsumptionLog;
 import com.example.demo.service.ConsumptionLogService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/consumptions")
+@RequestMapping("/api/consumption")
+@Tag(name = "Consumption")
 public class ConsumptionLogController {
 
     private final ConsumptionLogService service;
@@ -16,28 +18,19 @@ public class ConsumptionLogController {
         this.service = service;
     }
 
-    // POST /api/consumptions
-    @PostMapping
-    public ConsumptionLog create(@RequestBody ConsumptionLog log) {
-        return service.save(log);
+    @PostMapping("/{stockRecordId}")
+    public ConsumptionLog log(@PathVariable Long stockRecordId,
+                              @RequestBody ConsumptionLog log) {
+        return service.logConsumption(stockRecordId, log);
     }
 
-    // GET /api/consumptions
-    @GetMapping
-    public List<ConsumptionLog> getAll() {
-        return service.getAll();
+    @GetMapping("/record/{stockRecordId}")
+    public List<ConsumptionLog> getByRecord(@PathVariable Long stockRecordId) {
+        return service.getLogsByStockRecord(stockRecordId);
     }
 
-    // ✅ GET /api/consumptions/{id}
     @GetMapping("/{id}")
-    public ConsumptionLog getById(@PathVariable Long id) {
-        return service.getById(id);
-    }
-
-    // (OPTIONAL – useful for project, safe to keep)
-    // GET /api/consumptions/stock/{stockRecordId}
-    @GetMapping("/stock/{stockRecordId}")
-    public List<ConsumptionLog> getByStockRecord(@PathVariable Long stockRecordId) {
-        return service.getByStockRecord(stockRecordId);
+    public ConsumptionLog get(@PathVariable Long id) {
+        return service.getLog(id);
     }
 }
