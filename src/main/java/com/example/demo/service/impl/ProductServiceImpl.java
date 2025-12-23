@@ -5,38 +5,41 @@ import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.service.ProductService;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository repo;
+    private final ProductRepository repository;
 
-    public ProductServiceImpl(ProductRepository repo) {
-        this.repo = repo;
+    public ProductServiceImpl(ProductRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public Product createProduct(Product p) {
-        if (p.getProductName() == null || p.getProductName().isBlank()) {
-            throw new IllegalArgumentException("productName must not be blank");
+    public Product createProduct(Product product) {
+        if (product.getProductName() == null || product.getProductName().isBlank()) {
+            throw new IllegalArgumentException("productName must not be empty");
         }
-        repo.findBySku(p.getSku()).ifPresent(x -> {
-            throw new IllegalArgumentException("SKU already exists");
+
+        repository.findBySku(product.getSku()).ifPresent(p -> {
+            throw new IllegalArgumentException("sku already exists");
         });
-        p.setCreatedAt(LocalDateTime.now());
-        return repo.save(p);
+
+        product.setCreatedAt(LocalDateTime.now());
+        return repository.save(product);
     }
 
     @Override
     public Product getProduct(Long id) {
-        return repo.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return repo.findAll();
+        return repository.findAll();
     }
 }

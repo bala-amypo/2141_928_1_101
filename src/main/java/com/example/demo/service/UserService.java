@@ -1,13 +1,15 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.User;
-import java.util.List;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.dto.UserRegisterDto;
+import com.example.demo.model.User;
 
 public interface UserService {
 
-    User saveUser(User user);
+    User register(UserRegisterDto dto);
 
-    List<User> getAllUsers();
+    AuthResponse login(AuthRequest request);
 
-    User getUserById(Long id);
+    User getByEmail(String email);
 }

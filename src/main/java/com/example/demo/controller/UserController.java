@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.User;
+import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +16,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public List<User> getUsers() {
-        return userService.getAllUsers();
-    }
-
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    @GetMapping("/{email}")
+    public User getByEmail(@PathVariable String email) {
+        return userService.getByEmail(email);
     }
 }
