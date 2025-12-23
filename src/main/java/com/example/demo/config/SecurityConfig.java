@@ -18,10 +18,7 @@ public class SecurityConfig {
         this.jwtFilter = jwtFilter;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
