@@ -263,7 +263,7 @@ class DemoApplicationTests {
 
         AuthResponse response = userService.login(loginRequest);
         assertNotNull(response.getToken());
-        assertEquals("Login User", response.getName());
+        assertEquals("login@example.com", response.getEmail());
     }
 
     @Test
