@@ -1,40 +1,47 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.model.ConsumptionLog;
-import com.example.demo.service.ConsumptionLogService;
+import com.example.demo.model.StockRecord;
+import com.example.demo.service.StockRecordService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/consumption")
-public class ConsumptionLogController {
+@RequestMapping("/api/stocks")
+public class StockRecordController {
 
 
-private final ConsumptionLogService service;
+private final StockRecordService service;
 
 
-public ConsumptionLogController(ConsumptionLogService service) {
+public StockRecordController(StockRecordService service) {
 this.service = service;
 }
 
 
-@PostMapping("/{stockRecordId}")
-public ConsumptionLog log(@PathVariable Long stockRecordId,
-@RequestBody ConsumptionLog log) {
-return service.logConsumption(stockRecordId, log);
+@PostMapping("/{productId}/{warehouseId}")
+public StockRecord create(@PathVariable Long productId,
+@PathVariable Long warehouseId,
+@RequestBody StockRecord record) {
+return service.createStockRecord(productId, warehouseId, record);
 }
 
 
-@GetMapping("/record/{stockRecordId}")
-public List<ConsumptionLog> byRecord(@PathVariable Long stockRecordId) {
-return service.getLogsByStockRecord(stockRecordId);
+@GetMapping("/product/{productId}")
+public List<StockRecord> byProduct(@PathVariable Long productId) {
+return service.getRecordsBy_product(productId);
+}
+
+
+@GetMapping("/warehouse/{warehouseId}")
+public List<StockRecord> byWarehouse(@PathVariable Long warehouseId) {
+return service.getRecordsByWarehouse(warehouseId);
 }
 
 
 @GetMapping("/{id}")
-public ConsumptionLog get(@PathVariable Long id) {
-return service.getLog(id);
+public StockRecord get(@PathVariable Long id) {
+return service.getStockRecord(id);
 }
 }
