@@ -2,14 +2,11 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "stock_records", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"product_id", "warehouse_id"})
-})
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockRecord {
@@ -18,15 +15,14 @@ public class StockRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    private int currentQuantity;
+    private int reorderThreshold;
+
+    @ManyToOne
     private Product product;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Warehouse warehouse;
-
-    private Integer currentQuantity;
-
-    private Integer reorderThreshold;
 
     private LocalDateTime lastUpdated;
 }
