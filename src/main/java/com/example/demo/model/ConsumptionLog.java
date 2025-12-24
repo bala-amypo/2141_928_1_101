@@ -3,13 +3,14 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "consumption_logs")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ConsumptionLog {
 
     @Id
@@ -17,10 +18,9 @@ public class ConsumptionLog {
     private Long id;
 
     private int consumedQuantity;
-    private LocalDate consumedDate;
+    private LocalDateTime consumedDate;
 
     @ManyToOne
+    @JoinColumn(name = "stock_record_id")
     private StockRecord stockRecord;
-
-    private LocalDateTime createdAt;
 }

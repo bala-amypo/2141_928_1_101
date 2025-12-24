@@ -6,9 +6,11 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "warehouses")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Warehouse {
 
     @Id

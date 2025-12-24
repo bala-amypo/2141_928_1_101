@@ -6,9 +6,11 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "prediction_rules")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class PredictionRule {
 
     @Id
@@ -19,6 +21,5 @@ public class PredictionRule {
     private int averageDaysWindow;
     private int minDailyUsage;
     private int maxDailyUsage;
-
     private LocalDateTime createdAt;
 }
