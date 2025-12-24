@@ -2,14 +2,12 @@ package com.example.demo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.Set;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
-    private String token;
-    private Long userId;
+public class AuthRequest {
     private String email;
-    private Set<String> roles; // added field
+    private String password;
 }

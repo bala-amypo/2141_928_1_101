@@ -11,5 +11,5 @@ public class AuthResponse {
     private String token;
     private Long userId;
     private String email;
-    private Set<String> roles; // added field
+    private Set<String> roles; // include roles
 }
