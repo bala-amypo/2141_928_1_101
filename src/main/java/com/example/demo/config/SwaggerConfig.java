@@ -1,39 +1,38 @@
 package com.example.demo.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
+
 import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
 
 @Configuration
-public class SwaggerConfig {
+public class OpenApiConfig {
 
-    private static final String SECURITY_SCHEME_NAME = "bearerAuth";
 
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title("Resource Management API")
-                        .version("1.0")
-                        .description("API documentation with JWT Security"))
-                .servers(List.of(
-                        new Server().url("https://9155.408procr.amypo.ai/")
-                ))
-                .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
-                .components(new Components()
-                        .addSecuritySchemes(SECURITY_SCHEME_NAME,
-                                new SecurityScheme()
-                                        .name(SECURITY_SCHEME_NAME)
-                                        .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
-                                        .bearerFormat("JWT")
-                        ));
-    }
+@Bean
+public OpenAPI customOpenAPI() {
+final String securitySchemeName = "bearerAuth";
+
+
+return new OpenAPI()
+.info(new Info()
+.title("Smart Inventory Restock Predictor API")
+.version("1.0")
+.description("API documentation for Smart Inventory Restock Predictor"))
+.addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+.components(new Components()
+.addSecuritySchemes(securitySchemeName,
+new SecurityScheme()
+.name(securitySchemeName)
+.type(SecurityScheme.Type.HTTP)
+.scheme("bearer")
+.bearerFormat("JWT")
+)
+);
+}
 }
