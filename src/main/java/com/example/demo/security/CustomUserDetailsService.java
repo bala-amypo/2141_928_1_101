@@ -1,35 +1,35 @@
 package com.example.demo.security;
 
-
+import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
+    private final UserRepository userRepository;
 
-private final UserRepository repository;
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
 
+        // Convert Set<Role> to Set<String> safely
+        var authorities = user.getRoles().stream()
+                .map(Enum::name) // Role must be enum
+                .collect(Collectors.toSet());
 
-public CustomUserDetailsService(UserRepository repository) {
-this.repository = repository;
-}
-
-
-@Override
-public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-var user = repository.findByEmail(email)
-.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-
-return org.springframework.security.core.userdetails.User
-.withUsername(user.getEmail())
-.password(user.getPassword())
-.authorities(user.getRoles().stream().map(Enum::name).toList())
-.build();
-}
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword())
+                .authorities(authorities.toArray(new String[0]))
+                .build();
+    }
 }
