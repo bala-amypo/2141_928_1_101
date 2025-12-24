@@ -1,50 +1,53 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.UserRegisterDto;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User register(UserRegisterDto dto) {
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
+    @Override
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public User registerUser(UserRegisterDto dto) {
+        Set<Role> roles = new HashSet<>();
+        if (dto.getRoles() != null) {
+            dto.getRoles().forEach(roleName -> {
+                Role role = roleRepository.findByName(roleName)
+                        .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
+                roles.add(role);
+            });
+        }
+
         User user = User.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))
-                .roles(dto.getRoles().stream()
-                        .map(Role::valueOf) // Convert string -> Role enum
-                        .collect(Collectors.toSet()))
+                .roles(roles)
                 .build();
 
         return userRepository.save(user);
-    }
-
-    @Override
-    public AuthResponse login(String email, String token) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        // Convert roles to strings
-        Set<String> roles = user.getRoles().stream()
-                .map(Enum::name)
-                .collect(Collectors.toSet());
-
-        // Include roles in AuthResponse (added roles field)
-        return new AuthResponse(token, user.getId(), user.getEmail(), roles);
     }
 }
