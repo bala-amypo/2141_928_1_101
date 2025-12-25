@@ -21,14 +21,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Corrected TestNG test class (60 tests). Fixed invalid MockMvc orExpect(...) usage
- * and replaced with proper andExpect(...) or custom lambda checks when an OR was intended.
+ * Corrected TestNG test class (60 tests). Fixed invalid MockMvc `orExpect(...)` usage
+ * and replaced with proper `andExpect(...)` or custom lambda checks when an OR was intended.
  */
 @SpringBootTest
 @Listeners(TestResultListener.class)
@@ -95,10 +96,12 @@ public class InventoryApplicationTests extends AbstractTestNGSpringContextTests 
         mockMvc.perform(get("/").accept(MediaType.TEXT_HTML)).andExpect(status().is4xxClientError());
     }
 
-    @Test(priority = 6, description = "1.6 - Confirm application main runs")
-    public void t6_mainRun() {
-        Assert.assertTrue(true); // Do NOT start the application again
-    }
+@Test(priority = 6, description = "1.6 - Confirm application main runs")
+public void t6_mainRun() {
+    Assert.assertTrue(true); // Do NOT start the application again
+}
+
+
 
     /////////////////////////
     // 2) Implement CRUD operations using Spring Boot and REST APIs (tests 7-22)
@@ -477,11 +480,14 @@ public class InventoryApplicationTests extends AbstractTestNGSpringContextTests 
                 });
     }
 
-    @Test(priority = 53, description = "7.3 - Simple placeholder test for protected endpoint case")
-    public void t53_simplePrintTest() {
+@Test(priority = 53, description = "7.3 - Simple placeholder test for protected endpoint case")
+public void t53_simplePrintTest() {
     System.out.println("Test 53 executed — placeholder logic.");
     assert true;
-    }
+}
+
+
+
 
     @Test(priority = 54, description = "7.4 - JWT validation behavior (mocked)")
     public void t54_jwtValidation() {
@@ -537,5 +543,4 @@ public class InventoryApplicationTests extends AbstractTestNGSpringContextTests 
         LocalDate d = predictionService.predictRestockDate(1L);
         Assert.assertTrue(d.isAfter(LocalDate.now()));
     }
-
 }
