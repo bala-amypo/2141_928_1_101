@@ -1,10 +1,7 @@
 package com.example.demo.model;
 
+import lombok.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
@@ -14,17 +11,16 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConsumptionLog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @ManyToOne
-    @JoinColumn(name = "stock_record_id", nullable = false)
+    @JoinColumn(nullable = false)
     private StockRecord stockRecord;
-    
-    @Column(nullable = false)
+
     private Integer consumedQuantity;
-    
-    @Column(nullable = false)
+
     private LocalDate consumedDate;
 }
