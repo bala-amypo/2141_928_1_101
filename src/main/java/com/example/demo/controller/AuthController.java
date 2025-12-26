@@ -4,18 +4,17 @@ import com.example.demo.model.User;
 import com.example.demo.model.Role;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.config.JwtProvider;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "Authentication", description = "APIs for user authentication")
 public class AuthController {
     
     @Autowired
@@ -28,21 +27,37 @@ public class AuthController {
     private JwtProvider jwtProvider;
     
     @PostMapping("/register")
-    @Operation(summary = "Register a new user")
     public ResponseEntity<?> register(@RequestBody Map<String, String> request) {
         User user = User.builder()
-            .name(request.get("name"))
-            .email(request.get("email"))
-            .password(passwordEncoder.encode(request.get("password")))
-            .roles(Set.of(Role.ROLE_USER))
-            .build();
+                .name(request.get("name"))
+                .email(request.get("email"))
+                .password(passwordEncoder.encode(request.get("password")))
+                .roles(Set.of(Role.ROLE_USER))
+                .build();
+        
         userRepository.save(user);
         return ResponseEntity.ok().build();
     }
     
     @PostMapping("/login")
-    @Operation(summary = "Login user")
     public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
-        return ResponseEntity.badRequest().build();
+        String email = request.get("email");
+        String password = request.get("password");
+        
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isEmpty() || !passwordEncoder.matches(password, userOpt.get().getPassword())) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        User user = userOpt.get();
+        Set<String> roleStrings = user.getRoles().stream()
+                .map(Role::name)
+                .collect(java.util.stream.Collectors.toSet());
+        
+        String token = jwtProvider.generateToken(user.getEmail(), user.getId(), roleStrings);
+        
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        return ResponseEntity.ok(response);
     }
 }
