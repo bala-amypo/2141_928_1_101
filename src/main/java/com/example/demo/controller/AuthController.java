@@ -1,0 +1,19 @@
+package com.example.demo.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+    
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody Object request) {
+        return ResponseEntity.ok("User registered");
+    }
+    
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Object request) {
+        return ResponseEntity.badRequest().body("Invalid credentials");
+    }
+}

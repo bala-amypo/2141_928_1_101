@@ -1,0 +1,24 @@
+package com.example.demo.controller;
+
+import com.example.demo.model.Warehouse;
+import com.example.demo.service.WarehouseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/warehouses")
+public class WarehouseController {
+    
+    @Autowired
+    private WarehouseService warehouseService;
+    
+    @PostMapping
+    public Warehouse createWarehouse(@RequestBody Warehouse warehouse) {
+        return warehouseService.createWarehouse(warehouse);
+    }
+    
+    @GetMapping("/{id}")
+    public Warehouse getWarehouse(@PathVariable Long id) {
+        return warehouseService.getWarehouse(id);
+    }
+}
