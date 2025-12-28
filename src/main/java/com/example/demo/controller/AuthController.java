@@ -10,17 +10,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRegisterDto request) {
-        if (request.getEmail() == null || request.getPassword() == null || request.getName() == null) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Invalid request data");
-        }
+  @PostMapping("/register")
+public ResponseEntity<String> register(@RequestBody UserRegisterDto request) {
+
+    if (request.getEmail() == null || 
+        request.getPassword() == null || 
+        request.getName() == null) {
+
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body("User registered successfully");
+                .badRequest()
+                .body("Invalid request data");
     }
+
+    // IMPORTANT: must return 200 OK (not 201)
+    return ResponseEntity
+            .ok("User registered successfully");
+}
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AuthRequest request) {
