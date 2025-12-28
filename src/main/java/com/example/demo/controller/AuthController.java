@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.UserRegisterDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,13 +12,25 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody UserRegisterDto request) {
-        System.out.println("Register => " + request.getEmail());
-        return ResponseEntity.ok("User registered successfully: " + request.getEmail());
+        if (request.getEmail() == null || request.getPassword() == null || request.getName() == null) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Invalid request data");
+        }
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("User registered successfully");
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AuthRequest request) {
-        System.out.println("Login => " + request.getEmail());
-        return ResponseEntity.ok("Login success");
+        if (request.getEmail() == null || request.getPassword() == null ||
+                !request.getEmail().equals("test@gmail.com") || !request.getPassword().equals("password")) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid credentials");
+        }
+
+        return ResponseEntity.ok("Login successful");
     }
 }
