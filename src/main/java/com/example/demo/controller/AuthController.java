@@ -22,7 +22,6 @@ public ResponseEntity<String> register(@RequestBody UserRegisterDto request) {
                 .body("Invalid request data");
     }
 
-    // IMPORTANT: must return 200 OK (not 201)
     return ResponseEntity
             .ok("User registered successfully");
 }
